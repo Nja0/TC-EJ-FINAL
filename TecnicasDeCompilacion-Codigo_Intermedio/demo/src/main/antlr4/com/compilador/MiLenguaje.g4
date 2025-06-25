@@ -6,6 +6,7 @@ programa
 
 sentencia
     : sentenciaIf
+    | sentenciaWhile
     | declaracionFuncion
     | declaracionVariable
     | asignacion
@@ -15,6 +16,11 @@ sentencia
 sentenciaIf
     : IF PA expresion PC bloque (ELSE bloque)?
     ;
+
+sentenciaWhile
+    : WHILE PA expresion PC bloque
+    ;
+
 
 bloque
     : LA (sentencia)* LC
