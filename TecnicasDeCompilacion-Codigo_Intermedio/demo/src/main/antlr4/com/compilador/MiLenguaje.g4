@@ -8,6 +8,7 @@ sentencia
     : sentenciaIf
     | sentenciaWhile
     | sentenciaFor
+    | sentenciaBreak
     | declaracionFuncion
     | declaracionVariable
     | asignacion
@@ -26,6 +27,9 @@ sentenciaFor
     : FOR PA (declaracionVariable | asignacion)? expresion? PYC expresion? PC bloque
     ;    
 
+sentenciaBreak
+    : BREAK PYC
+    ;
 
 bloque
     : LA (sentencia)* LC

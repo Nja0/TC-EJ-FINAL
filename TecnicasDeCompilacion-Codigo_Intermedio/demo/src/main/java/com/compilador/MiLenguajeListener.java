@@ -58,6 +58,16 @@ public interface MiLenguajeListener extends ParseTreeListener {
 	 */
 	void exitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MiLenguajeParser#sentenciaBreak}.
+	 * @param ctx the parse tree
+	 */
+	void enterSentenciaBreak(MiLenguajeParser.SentenciaBreakContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MiLenguajeParser#sentenciaBreak}.
+	 * @param ctx the parse tree
+	 */
+	void exitSentenciaBreak(MiLenguajeParser.SentenciaBreakContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MiLenguajeParser#bloque}.
 	 * @param ctx the parse tree
 	 */
