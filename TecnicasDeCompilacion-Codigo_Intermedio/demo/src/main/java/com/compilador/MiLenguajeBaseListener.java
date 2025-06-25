@@ -64,6 +64,18 @@ public class MiLenguajeBaseListener implements MiLenguajeListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSentenciaFor(MiLenguajeParser.SentenciaForContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBloque(MiLenguajeParser.BloqueContext ctx) { }
 	/**
 	 * {@inheritDoc}

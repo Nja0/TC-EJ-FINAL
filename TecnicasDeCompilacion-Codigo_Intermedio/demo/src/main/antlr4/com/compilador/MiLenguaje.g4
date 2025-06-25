@@ -7,6 +7,7 @@ programa
 sentencia
     : sentenciaIf
     | sentenciaWhile
+    | sentenciaFor
     | declaracionFuncion
     | declaracionVariable
     | asignacion
@@ -20,6 +21,10 @@ sentenciaIf
 sentenciaWhile
     : WHILE PA expresion PC bloque
     ;
+
+sentenciaFor
+    : FOR PA (declaracionVariable | asignacion)? expresion? PYC expresion? PC bloque
+    ;    
 
 
 bloque
