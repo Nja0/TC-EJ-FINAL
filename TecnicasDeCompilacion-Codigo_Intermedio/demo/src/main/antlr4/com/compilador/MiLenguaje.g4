@@ -9,6 +9,7 @@ sentencia
     | sentenciaWhile
     | sentenciaFor
     | sentenciaBreak
+    | sentenciaContinue
     | declaracionFuncion
     | declaracionVariable
     | asignacion
@@ -30,6 +31,11 @@ sentenciaFor
 sentenciaBreak
     : BREAK PYC
     ;
+
+sentenciaContinue
+    : CONTINUE PYC
+    ;
+
 
 bloque
     : LA (sentencia)* LC
