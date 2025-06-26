@@ -1,0 +1,22 @@
+// Código de tres direcciones generado automáticamente
+// Archivo: ejemplo3_codigo_intermedio.txt
+// Total de instrucciones: 18
+
+  0: func_main:
+  1: i = 0
+  2: L0:
+  3: t0 = i < 5
+  4: if !t0 goto L2
+  5: L1:
+  6: t1 = i == 2
+  7: if !t1 goto L3
+  8: goto L1
+  9: L3:
+ 10: t2 = i == 4
+ 11: if !t2 goto L5
+ 12: goto L2
+ 13: L5:
+ 14: t3 = i + 1
+ 15: goto L0
+ 16: L2:
+ 17: return 0

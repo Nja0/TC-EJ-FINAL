@@ -1,12 +1,17 @@
 package com.compilador;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
+
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 public class CodigoVisitor extends MiLenguajeBaseVisitor<String> {
     
     private GeneradorCodigo generador;
     private TablaSimbolos tabla;
+    private Deque<String> pilaInicioBucle = new ArrayDeque<>();
+    private Deque<String> pilaFinBucle = new ArrayDeque<>();
     
     public CodigoVisitor(TablaSimbolos tabla) {
         this.generador = new GeneradorCodigo();
@@ -117,6 +122,108 @@ public class CodigoVisitor extends MiLenguajeBaseVisitor<String> {
         System.out.println("🎯 VISITOR: IF completado");
         return null;
     }
+
+   @Override
+public String visitSentenciaWhile(MiLenguajeParser.SentenciaWhileContext ctx) {
+    System.out.println("🎯 VISITOR: Encontré un WHILE");
+
+    String labelInicio = generador.newLabel();
+    String labelFin = generador.newLabel();
+
+    pilaInicioBucle.push(labelInicio);
+    pilaFinBucle.push(labelFin);
+
+    generador.genLabel(labelInicio);
+
+    String condicion = visit(ctx.expresion());
+    generador.genIfFalse(condicion, labelFin);
+
+    visit(ctx.bloque());
+
+    generador.genGoto(labelInicio);
+    generador.genLabel(labelFin);
+
+    pilaInicioBucle.pop();
+    pilaFinBucle.pop();
+
+    return null;
+}
+
+
+
+@Override
+public String visitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx) {
+    System.out.println("🎯 VISITOR: Encontré un FOR");
+
+    String labelCondicion = generador.newLabel();
+    String labelInicio = generador.newLabel();
+    String labelFin = generador.newLabel();
+
+    // Inicialización (declaración o asignación)
+    if (ctx.getChild(2) instanceof MiLenguajeParser.DeclaracionVariableContext) {
+        visit(ctx.declaracionVariable());
+    } else if (ctx.getChild(2) instanceof MiLenguajeParser.AsignacionContext) {
+        visit(ctx.asignacion());
+    }
+
+    pilaInicioBucle.push(labelInicio);
+    pilaFinBucle.push(labelFin);
+
+    generador.genLabel(labelCondicion);
+
+    // Condición (opcional)
+    if (ctx.expresion(0) != null) {
+        String condicion = visit(ctx.expresion(0));
+        generador.genIfFalse(condicion, labelFin);
+    }
+
+    generador.genLabel(labelInicio);
+    visit(ctx.bloque());
+
+    // Actualización (segunda expresión, también opcional)
+    if (ctx.expresion(1) != null) {
+        visit(ctx.expresion(1));
+    }
+
+    generador.genGoto(labelCondicion);
+    generador.genLabel(labelFin);
+
+    pilaInicioBucle.pop();
+    pilaFinBucle.pop();
+
+    return null;
+}
+
+
+@Override
+public String visitSentenciaBreak(MiLenguajeParser.SentenciaBreakContext ctx) {
+    System.out.println("🎯 VISITOR: Encontré BREAK");
+
+    if (pilaFinBucle.isEmpty()) {
+        System.err.println("❌ Error: BREAK fuera de un bucle");
+        return null;
+    }
+
+    generador.genGoto(pilaFinBucle.peek());
+    return null;
+}
+
+@Override
+public String visitSentenciaContinue(MiLenguajeParser.SentenciaContinueContext ctx) {
+    System.out.println("🎯 VISITOR: Encontré CONTINUE");
+
+    if (pilaInicioBucle.isEmpty()) {
+        System.err.println("❌ Error: CONTINUE fuera de un bucle");
+        return null;
+    }
+
+    generador.genGoto(pilaInicioBucle.peek());
+    return null;
+}
+
+
+
+
     
     @Override
     public String visitExpBinaria(MiLenguajeParser.ExpBinariaContext ctx) {
