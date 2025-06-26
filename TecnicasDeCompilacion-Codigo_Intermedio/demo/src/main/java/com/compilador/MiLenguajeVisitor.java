@@ -41,6 +41,18 @@ public interface MiLenguajeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MiLenguajeParser#forInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForInit(MiLenguajeParser.ForInitContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MiLenguajeParser#forUpdate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForUpdate(MiLenguajeParser.ForUpdateContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MiLenguajeParser#sentenciaBreak}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -83,11 +95,23 @@ public interface MiLenguajeVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaracionVariable(MiLenguajeParser.DeclaracionVariableContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MiLenguajeParser#declaracionVariableSinPYC}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaracionVariableSinPYC(MiLenguajeParser.DeclaracionVariableSinPYCContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MiLenguajeParser#asignacion}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAsignacion(MiLenguajeParser.AsignacionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MiLenguajeParser#asignacionSinPYC}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAsignacionSinPYC(MiLenguajeParser.AsignacionSinPYCContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MiLenguajeParser#retorno}.
 	 * @param ctx the parse tree

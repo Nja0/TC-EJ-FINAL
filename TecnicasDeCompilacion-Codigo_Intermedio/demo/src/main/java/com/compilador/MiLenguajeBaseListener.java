@@ -76,6 +76,30 @@ public class MiLenguajeBaseListener implements MiLenguajeListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterForInit(MiLenguajeParser.ForInitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForInit(MiLenguajeParser.ForInitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForUpdate(MiLenguajeParser.ForUpdateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForUpdate(MiLenguajeParser.ForUpdateContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSentenciaBreak(MiLenguajeParser.SentenciaBreakContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -160,6 +184,18 @@ public class MiLenguajeBaseListener implements MiLenguajeListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDeclaracionVariableSinPYC(MiLenguajeParser.DeclaracionVariableSinPYCContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaracionVariableSinPYC(MiLenguajeParser.DeclaracionVariableSinPYCContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAsignacion(MiLenguajeParser.AsignacionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,6 +203,18 @@ public class MiLenguajeBaseListener implements MiLenguajeListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAsignacion(MiLenguajeParser.AsignacionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAsignacionSinPYC(MiLenguajeParser.AsignacionSinPYCContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAsignacionSinPYC(MiLenguajeParser.AsignacionSinPYCContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

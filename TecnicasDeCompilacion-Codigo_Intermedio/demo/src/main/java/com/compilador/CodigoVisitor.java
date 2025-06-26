@@ -149,7 +149,60 @@ public String visitSentenciaWhile(MiLenguajeParser.SentenciaWhileContext ctx) {
     return null;
 }
 
+// Métodos que necesitas AGREGAR o MODIFICAR en tu CodigoVisitor.java
 
+@Override
+public String visitForInit(MiLenguajeParser.ForInitContext ctx) {
+    System.out.println("🎯 VISITOR: Procesando inicialización del FOR");
+    
+    if (ctx.declaracionVariableSinPYC() != null) {
+        return visit(ctx.declaracionVariableSinPYC());
+    } else if (ctx.asignacionSinPYC() != null) {
+        return visit(ctx.asignacionSinPYC());
+    }
+    return null;
+}
+
+@Override
+public String visitForUpdate(MiLenguajeParser.ForUpdateContext ctx) {
+    System.out.println("🎯 VISITOR: Procesando actualización del FOR");
+    
+    if (ctx.asignacionSinPYC() != null) {
+        return visit(ctx.asignacionSinPYC());
+    }
+    return null;
+}
+
+// NUEVOS métodos que necesitas AGREGAR para las versiones sin punto y coma
+@Override
+public String visitDeclaracionVariableSinPYC(MiLenguajeParser.DeclaracionVariableSinPYCContext ctx) {
+    String variable = ctx.ID().getText();
+    String tipo = ctx.tipo().getText();
+    System.out.println("🎯 VISITOR: Declaración de variable (sin ;) " + tipo + " " + variable);
+    
+    // Si tiene inicialización
+    if (ctx.IGUAL() != null && ctx.expresion() != null) {
+        System.out.println("🎯 VISITOR: Con inicialización...");
+        String valor = visit(ctx.expresion());
+        generador.genAsignacion(variable, valor);
+    }
+    
+    return null;
+}
+
+@Override
+public String visitAsignacionSinPYC(MiLenguajeParser.AsignacionSinPYCContext ctx) {
+    String variable = ctx.ID().getText();
+    System.out.println("🎯 VISITOR: Asignación (sin ;) -> " + variable + " = ...");
+    
+    // Procesar la expresión del lado derecho
+    String resultado = visit(ctx.expresion());
+    
+    // Generar la asignación
+    generador.genAsignacion(variable, resultado);
+    
+    return null;
+}
 
 @Override
 public String visitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx) {
@@ -159,40 +212,48 @@ public String visitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx) {
     String labelInicio = generador.newLabel();
     String labelFin = generador.newLabel();
 
-    // Inicialización (declaración o asignación)
-    if (ctx.getChild(2) instanceof MiLenguajeParser.DeclaracionVariableContext) {
-        visit(ctx.declaracionVariable());
-    } else if (ctx.getChild(2) instanceof MiLenguajeParser.AsignacionContext) {
-        visit(ctx.asignacion());
+    // 🔸 Inicialización (forInit)
+    if (ctx.forInit() != null) {
+        visit(ctx.forInit());
     }
 
+    // 🔹 Guardar etiquetas para break/continue
     pilaInicioBucle.push(labelInicio);
     pilaFinBucle.push(labelFin);
 
+    // 🔸 Etiqueta para condición
     generador.genLabel(labelCondicion);
 
-    // Condición (opcional)
-    if (ctx.expresion(0) != null) {
-        String condicion = visit(ctx.expresion(0));
+    // 🔸 Evaluar condición (opcional)
+    if (ctx.expresion() != null) {
+        String condicion = visit(ctx.expresion());
         generador.genIfFalse(condicion, labelFin);
     }
 
+    // 🔸 Etiqueta de inicio del cuerpo
     generador.genLabel(labelInicio);
+
+    // 🔸 Cuerpo del for
     visit(ctx.bloque());
 
-    // Actualización (segunda expresión, también opcional)
-    if (ctx.expresion(1) != null) {
-        visit(ctx.expresion(1));
+    // 🔸 Actualización (forUpdate)
+    if (ctx.forUpdate() != null) {
+        visit(ctx.forUpdate());
     }
 
+    // 🔸 Volver a evaluar la condición
     generador.genGoto(labelCondicion);
+
+    // 🔸 Fin del bucle
     generador.genLabel(labelFin);
 
+    // 🔸 Limpiar pilas
     pilaInicioBucle.pop();
     pilaFinBucle.pop();
 
     return null;
 }
+
 
 
 @Override

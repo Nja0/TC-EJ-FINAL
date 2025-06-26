@@ -58,6 +58,26 @@ public interface MiLenguajeListener extends ParseTreeListener {
 	 */
 	void exitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MiLenguajeParser#forInit}.
+	 * @param ctx the parse tree
+	 */
+	void enterForInit(MiLenguajeParser.ForInitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MiLenguajeParser#forInit}.
+	 * @param ctx the parse tree
+	 */
+	void exitForInit(MiLenguajeParser.ForInitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MiLenguajeParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void enterForUpdate(MiLenguajeParser.ForUpdateContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MiLenguajeParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void exitForUpdate(MiLenguajeParser.ForUpdateContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MiLenguajeParser#sentenciaBreak}.
 	 * @param ctx the parse tree
 	 */
@@ -128,6 +148,16 @@ public interface MiLenguajeListener extends ParseTreeListener {
 	 */
 	void exitDeclaracionVariable(MiLenguajeParser.DeclaracionVariableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MiLenguajeParser#declaracionVariableSinPYC}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaracionVariableSinPYC(MiLenguajeParser.DeclaracionVariableSinPYCContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MiLenguajeParser#declaracionVariableSinPYC}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaracionVariableSinPYC(MiLenguajeParser.DeclaracionVariableSinPYCContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MiLenguajeParser#asignacion}.
 	 * @param ctx the parse tree
 	 */
@@ -137,6 +167,16 @@ public interface MiLenguajeListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAsignacion(MiLenguajeParser.AsignacionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MiLenguajeParser#asignacionSinPYC}.
+	 * @param ctx the parse tree
+	 */
+	void enterAsignacionSinPYC(MiLenguajeParser.AsignacionSinPYCContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MiLenguajeParser#asignacionSinPYC}.
+	 * @param ctx the parse tree
+	 */
+	void exitAsignacionSinPYC(MiLenguajeParser.AsignacionSinPYCContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MiLenguajeParser#retorno}.
 	 * @param ctx the parse tree

@@ -25,8 +25,17 @@ sentenciaWhile
     ;
 
 sentenciaFor
-    : FOR PA (declaracionVariable | asignacion)? expresion? PYC expresion? PC bloque
-    ;    
+    : FOR PA forInit? PYC expresion? PYC forUpdate? PC bloque
+    ;
+
+forInit
+    : declaracionVariableSinPYC
+    | asignacionSinPYC
+    ;
+
+forUpdate
+    : asignacionSinPYC
+    ;
 
 sentenciaBreak
     : BREAK PYC
@@ -35,7 +44,6 @@ sentenciaBreak
 sentenciaContinue
     : CONTINUE PYC
     ;
-
 
 bloque
     : LA (sentencia)* LC
@@ -58,8 +66,17 @@ declaracionVariable
     | tipo ID IGUAL expresion PYC
     ;
 
+declaracionVariableSinPYC
+    : tipo ID
+    | tipo ID IGUAL expresion
+    ;
+
 asignacion
     : ID IGUAL expresion PYC
+    ;
+
+asignacionSinPYC
+    : ID IGUAL expresion
     ;
 
 retorno
@@ -93,6 +110,8 @@ operadorBinario
 argumentos
     : expresion (COMA expresion)*
     ;
+
+// TOKENS LÉXICOS
 PA   : '(' ;
 PC   : ')' ;
 CA   : '[' ;
@@ -122,11 +141,13 @@ OR   : '||' ;
 AND  : '&&' ;
 NOT  : '!'  ;
 
-FOR   : 'for' ;
-WHILE : 'while' ;
-
-IF    : 'if' ;
-ELSE  : 'else' ;
+// PALABRAS CLAVE
+FOR      : 'for' ;
+WHILE    : 'while' ;
+IF       : 'if' ;
+ELSE     : 'else' ;
+BREAK    : 'break' ;     // ← AGREGADO
+CONTINUE : 'continue' ;  // ← AGREGADO
 
 INT     : 'int' ;
 CHAR    : 'char' ;
@@ -135,17 +156,22 @@ VOID    : 'void' ;
 
 RETURN : 'return' ;
 
+// IDENTIFICADORES Y LITERALES
 ID : (LETRA | '_') (LETRA | DIGITO | '_')* ;
 INTEGER : DIGITO+ ;
 DECIMAL : INTEGER '.' INTEGER ;
 CHARACTER : '\'' (~['\r\n] | '\\' .) '\'' ;
 
+// COMENTARIOS
 COMENTARIO_LINEA : '//' ~[\r\n]* -> skip ;
 COMENTARIO_BLOQUE : '/*' .*? '*/' -> skip ;
 
+// ESPACIOS EN BLANCO
 WS : [ \r\n\t] -> skip ;
 
+// CATCH-ALL
 OTRO : . ;
 
+// FRAGMENTOS
 fragment LETRA : [A-Za-z] ;
 fragment DIGITO : [0-9] ;
