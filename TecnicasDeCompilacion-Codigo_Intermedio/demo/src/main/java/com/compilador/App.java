@@ -153,6 +153,20 @@ public class App {
             String codigoIntermedioPath = baseName + "_codigo_intermedio.txt";
             guardarCodigoEnArchivo(generador.getCodigo(), codigoIntermedioPath);
             System.out.println(GREEN + "✅ Código intermedio guardado en: " + codigoIntermedioPath + RESET);
+
+            // === OPTIMIZACIÓN DE CÓDIGO ===
+System.out.println(BLUE + "\n=== 5.1 OPTIMIZACIÓN DE CÓDIGO INTERMEDIO ===" + RESET);
+Optimizador optimizador = new Optimizador(generador.getCodigo());
+
+List<String> codigoOptimizado = optimizador.optimizar();
+optimizador.imprimirCodigoOptimizado();
+
+// Guardar código optimizado en archivo
+String codigoOptimizadoPath = baseName + "_codigo_optimizado.txt";
+guardarCodigoEnArchivo(codigoOptimizado, codigoOptimizadoPath);
+
+System.out.println(GREEN + "✅ Código optimizado guardado en: " + codigoOptimizadoPath + RESET);
+
             
             // 6. RESUMEN FINAL
             System.out.println(BLUE + "\n=== 6. RESUMEN DE COMPILACIÓN ===" + RESET);
@@ -205,6 +219,8 @@ public class App {
         }
         System.out.println("   💾 Archivo guardado con " + codigo.size() + " instrucciones");
     }
+
+
 
     /**
      * Genera y muestra el árbol sintáctico visualmente

@@ -1,6 +1,6 @@
 // Código de tres direcciones generado automáticamente
 // Archivo: ejemplo3_codigo_intermedio.txt
-// Total de instrucciones: 17
+// Total de instrucciones: 38
 
   0: i = 0
   1: L0:
@@ -11,7 +11,7 @@
   6: if !t1 goto L3
   7: goto L1
   8: L3:
-  9: t2 = i == 8
+  9: t2 = x == 8
  10: if !t2 goto L5
  11: goto L2
  12: L5:
@@ -19,3 +19,24 @@
  14: i = t3
  15: goto L0
  16: L2:
+ 17: func_funcion:
+ 18: i = 0
+ 19: L7:
+ 20: t4 = i < 10
+ 21: if !t4 goto L9
+ 22: L8:
+ 23: t5 = i == 5
+ 24: if !t5 goto L10
+ 25: goto L8
+ 26: L10:
+ 27: t6 = x == 8
+ 28: if !t6 goto L12
+ 29: goto L9
+ 30: L12:
+ 31: t7 = i + 1
+ 32: i = t7
+ 33: goto L7
+ 34: L9:
+ 35: func_fun:
+ 36: i = 5
+ 37: return i

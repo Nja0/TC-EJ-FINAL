@@ -1,9 +1,32 @@
+int i;
+int x;
 
-for(i = 0; i < 10; i = i + 1) {
+for(int i = 0; i < 10; i = i + 1) {
     if(i == 5) {
         continue;
     }
-    if(i == 8) {
+    if(x == 8) {
         break;
     }
 }
+
+
+void funcion(){
+
+    int asd = 10;
+    for(i = 0; i < 10; i = i + 1) {
+    if(i == 5) {
+        continue;
+    }
+    if(x == 8) {
+        break;
+    }
+
+
+}
+}
+    int fun(int i){
+        i = 5;
+
+        return i;
+    }

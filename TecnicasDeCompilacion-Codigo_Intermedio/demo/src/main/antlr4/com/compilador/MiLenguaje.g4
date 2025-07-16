@@ -53,6 +53,10 @@ declaracionFuncion
     : tipo ID PA parametros? PC bloque
     ;
 
+llamadaFuncion
+    : ID PA PC PYC
+    ;    
+
 parametros
     : parametro (COMA parametro)*
     ;
@@ -62,22 +66,31 @@ parametro
     ;
 
 declaracionVariable
-    : tipo ID PYC
-    | tipo ID IGUAL expresion PYC
+    : tipo ID PYC                                           // Variable simple
+    | tipo ID IGUAL expresion PYC                           // Variable con inicialización
+    | tipo ID CA expresion CC PYC                           // Array sin inicialización: int a[5];
+    | tipo ID CA expresion CC IGUAL expresion PYC           // Array con inicialización: int a[5] = ...
     ;
 
 declaracionVariableSinPYC
     : tipo ID
     | tipo ID IGUAL expresion
+    | tipo ID CA expresion CC
+    | tipo ID CA expresion CC IGUAL expresion
     ;
 
+
 asignacion
-    : ID IGUAL expresion PYC
+    : ID IGUAL expresion PYC                       // x = 5;
+    | ID CA expresion CC IGUAL expresion PYC       // x[0] = 5;
     ;
+
 
 asignacionSinPYC
     : ID IGUAL expresion
+    | ID CA expresion CC IGUAL expresion
     ;
+
 
 retorno
     : RETURN expresion? PYC
@@ -88,6 +101,9 @@ tipo
     | CHAR
     | DOUBLE
     | VOID
+    | BOOL
+    | STRING
+    | FLOAT
     ;
 
 expresion
@@ -95,6 +111,7 @@ expresion
     | NOT expresion                           #expNegacion
     | PA expresion PC                         #expParentizada
     | ID                                      #expVariable
+    | ID CA expresion CC                      #expArrayAcceso
     | INTEGER                                 #expEntero
     | DECIMAL                                 #expDecimal
     | CHARACTER                               #expCaracter
@@ -153,6 +170,9 @@ INT     : 'int' ;
 CHAR    : 'char' ;
 DOUBLE  : 'double' ;
 VOID    : 'void' ;
+BOOL    : 'bool' ;
+STRING  : 'string' ;
+FLOAT   : 'float' ;
 
 RETURN : 'return' ;
 

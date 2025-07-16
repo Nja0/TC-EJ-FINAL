@@ -70,20 +70,29 @@ public class CodigoVisitor extends MiLenguajeBaseVisitor<String> {
     }
     
     @Override
-    public String visitAsignacion(MiLenguajeParser.AsignacionContext ctx) {
+public String visitAsignacion(MiLenguajeParser.AsignacionContext ctx) {
+    // Casos:
+    // ID IGUAL expresion PYC
+    // ID CA expresion CC IGUAL expresion PYC
+
+    if (ctx.CA() != null) {
+        // Asignación a un array: x[2] = 10;
+        String nombreArray = ctx.ID().getText();
+        String indice = visit(ctx.expresion(0));  // índice dentro de los []
+        String valor = visit(ctx.expresion(1));   // valor a asignar
+        generador.getCodigo().add(nombreArray + "[" + indice + "] = " + valor + ";");
+        System.out.println("🎯 VISITOR: Asignación a array -> " + nombreArray + "[" + indice + "] = " + valor);
+    } else {
+        // Asignación normal: x = 10;
         String variable = ctx.ID().getText();
-        System.out.println("🎯 VISITOR: Encontré asignación -> " + variable + " = ...");
-        
-        // Procesar la expresión del lado derecho
-        System.out.println("🎯 VISITOR: Evaluando expresión del lado derecho...");
-        String resultado = visit(ctx.expresion());
-        
-        // Generar la asignación
-        System.out.println("🎯 VISITOR: Generando asignación final...");
+        String resultado = visit(ctx.expresion(0)); // Usamos expresion(0) para evitar error de tipo
         generador.genAsignacion(variable, resultado);
-        
-        return null;
+        System.out.println("🎯 VISITOR: Asignación simple -> " + variable + " = " + resultado);
     }
+
+    return null;
+}
+
     
     @Override
     public String visitSentenciaIf(MiLenguajeParser.SentenciaIfContext ctx) {
@@ -176,33 +185,65 @@ public String visitForUpdate(MiLenguajeParser.ForUpdateContext ctx) {
 // NUEVOS métodos que necesitas AGREGAR para las versiones sin punto y coma
 @Override
 public String visitDeclaracionVariableSinPYC(MiLenguajeParser.DeclaracionVariableSinPYCContext ctx) {
-    String variable = ctx.ID().getText();
     String tipo = ctx.tipo().getText();
-    System.out.println("🎯 VISITOR: Declaración de variable (sin ;) " + tipo + " " + variable);
-    
-    // Si tiene inicialización
-    if (ctx.IGUAL() != null && ctx.expresion() != null) {
-        System.out.println("🎯 VISITOR: Con inicialización...");
-        String valor = visit(ctx.expresion());
-        generador.genAsignacion(variable, valor);
+    String variable = ctx.ID().getText();
+
+    if (ctx.CA() != null && ctx.expresion(0) != null) {
+        // Caso: tipo ID [expresion]
+        String tamanio = visit(ctx.expresion(0));
+        System.out.println("🎯 VISITOR: Declaración de array sin ; -> " + tipo + " " + variable + "[" + tamanio + "]");
+        generador.getCodigo().add(tipo + " " + variable + "[" + tamanio + "]");
+        
+        // Si tiene inicialización también
+        if (ctx.IGUAL() != null && ctx.expresion(1) != null) {
+            String valorInicial = visit(ctx.expresion(1));
+            generador.getCodigo().add(variable + "[0] = " + valorInicial); // ejemplo simple
+            System.out.println("🎯 VISITOR: Inicialización de " + variable + "[0] = " + valorInicial);
+        }
+    } else {
+        // Declaración simple o con inicialización
+        System.out.println("🎯 VISITOR: Declaración variable sin ; -> " + tipo + " " + variable);
+        if (ctx.IGUAL() != null && ctx.expresion(0) != null) {
+            String valor = visit(ctx.expresion(0));
+            generador.genAsignacion(variable, valor);
+        }
     }
-    
+
     return null;
 }
 
 @Override
+public String visitExpArrayAcceso(MiLenguajeParser.ExpArrayAccesoContext ctx) {
+    String arreglo = ctx.ID().getText();
+    String indice = visit(ctx.expresion());
+    
+    System.out.println("🎯 VISITOR: Acceso a array -> " + arreglo + "[" + indice + "]");
+    
+    // Retornar la representación textual (o podés generar código intermedio si tenés algo como loadArray)
+    return arreglo + "[" + indice + "]";
+}
+
+
+@Override
 public String visitAsignacionSinPYC(MiLenguajeParser.AsignacionSinPYCContext ctx) {
-    String variable = ctx.ID().getText();
-    System.out.println("🎯 VISITOR: Asignación (sin ;) -> " + variable + " = ...");
-    
-    // Procesar la expresión del lado derecho
-    String resultado = visit(ctx.expresion());
-    
-    // Generar la asignación
-    generador.genAsignacion(variable, resultado);
-    
+    if (ctx.CA() != null) {
+        // Asignación a un array sin punto y coma
+        String nombreArray = ctx.ID().getText();
+        String indice = visit(ctx.expresion(0));
+        String valor = visit(ctx.expresion(1));
+        generador.getCodigo().add(nombreArray + "[" + indice + "] = " + valor);
+        System.out.println("🎯 VISITOR: Asignación a array (sin ;) -> " + nombreArray + "[" + indice + "] = " + valor);
+    } else {
+        // Asignación simple sin punto y coma
+        String variable = ctx.ID().getText();
+        String resultado = visit(ctx.expresion(0));
+        generador.genAsignacion(variable, resultado);
+        System.out.println("🎯 VISITOR: Asignación simple (sin ;) -> " + variable + " = " + resultado);
+    }
+
     return null;
 }
+
 
 @Override
 public String visitSentenciaFor(MiLenguajeParser.SentenciaForContext ctx) {
