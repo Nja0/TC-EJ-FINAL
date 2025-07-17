@@ -11,6 +11,7 @@ sentencia
     | sentenciaBreak
     | sentenciaContinue
     | declaracionFuncion
+    | llamadaFuncion
     | declaracionVariable
     | asignacion
     | retorno
@@ -54,8 +55,9 @@ declaracionFuncion
     ;
 
 llamadaFuncion
-    : ID PA PC PYC
-    ;    
+    : ID PA argumentos? PC PYC
+    ;
+
 
 parametros
     : parametro (COMA parametro)*
